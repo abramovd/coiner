@@ -3,6 +3,10 @@ from models.user import User
 from models.wallet import Wallet
 from models.Category import Category
 
+
+class RegistrationError(Exception):
+    pass
+
                
 def login():
     username = raw_input("Имя пользователя: ")
@@ -13,11 +17,6 @@ def login():
     password = raw_input("Пароль: ")
     user.login(password)
     return user
-   
-            
-class RegistrationError(Exception):
-    pass
-
 
 def registration():
     """

@@ -85,7 +85,7 @@ class TestCategoryCase(object):
 		"""
 		self.name, self.total_money = 'test Category', 1000000
 		self.category = Category(self.name, self.total_money)
-
+	
 	def test_add_money(self):
 		"""
 		Проверяет функцию пополнения баланса
@@ -108,7 +108,7 @@ class TestCategoryCase(object):
 		self.category.move_money(300000, test_wallet)
 		assert self.category.balance == 700000
 		assert test_wallet.balance == 300500
-         
+
 	def run_all_test(self):
 		"""
 		Запускает все тесты
