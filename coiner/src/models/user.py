@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import hashlib
+from errors import DoesNotExist
 
 
 class User(object):
@@ -93,6 +94,7 @@ class User(object):
 		"""
 		pass
     
+	@classmethod
 	def db_get(cls, **kwargs):
 		"""
 		Возвращает лишь одно пользователя,
@@ -100,4 +102,38 @@ class User(object):
 		либо если такого пользователя нет или их больше,
 		чем один, то raise DatabaseError
 		"""
-		pass
+		if len(kwargs) == 0:
+			raise ValueError('Нужен хотя бы один параметр для поиска!')
+       
+		with open(cls.path_to_db, 'r') as f:
+			fields = f.readline().strip().split(',')
+			k = set(kwargs.keys()) 
+			if k > set(fields):
+				raise ValueError('Not correct params')
+
+			for line in f.readlines():
+				user = line.strip().split(',')
+				for ind, field in enumerate(user):
+					if field == 'NULL':
+						user[ind] = None
+					flag = False
+					data = dict(zip(fields, user))
+					for key, value in kwargs.items():
+						if data[key] != value:
+							flag = True
+							break
+					if flag:
+						continue
+					user = cls(**data)
+					return user
+				raise DoesNotExist('Пользователь не существует')
+    
+	@classmethod
+	def db_create(cls, username, ):
+		user = cls(**kwargs)
+		with open(cls.path_to_db, 'ra') as f:
+			fields = f.readline().strip().split(',')
+			insert_line = []
+			for field in fields:
+				insert_line.append(getattr(user, field) or 'NULL')
+				f.write(','.join(insert_line))

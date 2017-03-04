@@ -4,6 +4,7 @@ import hashlib
 from models.user import User
 from models.category import Category
 from models.wallet import Wallet
+import main
 
 class TestUserCase(object):
 	"""
@@ -164,6 +165,20 @@ class TestWalletCase(object):
 		self.test_move_money_from_wal_to_wal()
 		self.test_move_money_from_wal_to_cat()
 
+
+class TestMain(object):
+	"""
+	Тестируем клиент пользователя
+	"""
+
+	def SetUp(self):
+		"""
+		Запускается в начале каждого теста,
+		создает пользователя для тестирования
+		"""
+		self.real_name, self.real_password = 'test User', 'password1234'
+		self.user = User(self.real_name, self.real_password)
+		print self.user.username
 
 if __name__ == '__main__':
 	TestUserCase().run_all_test()
